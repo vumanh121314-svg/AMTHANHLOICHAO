@@ -2,7 +2,7 @@ import base64
 import streamlit as st
 
 st.set_page_config(
-    page_title="Hệ Thống Lời Chào Taxi Xanh SM", page_icon="🚙", layout="centered"
+    page_title="Hệ Thống Lời Chào Taxi", page_icon="🚕", layout="centered"
 )
 
 
@@ -26,7 +26,7 @@ if not audio_len_base64 or not audio_xuong_base64:
       " tên file trong thư mục GitHub của bạn!"
   )
 else:
-  # Giao diện HTML + CSS phong cách Xanh SM đặc trưng
+  # Giao diện HTML + CSS có hình nền xe taxi chuyên nghiệp
   html_code = f"""
     <!DOCTYPE html>
     <html lang="vi">
@@ -41,8 +41,12 @@ else:
             }}
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-                /* Background chuẩn màu xanh ngọc đặc trưng của Xanh SM */
-                background: linear-gradient(135deg, #002d3a, #005f73, #0a9396);
+                /* Hình nền xe taxi với lớp phủ màu tối mờ để làm nổi bật bảng điều khiển */
+                background: linear-gradient(rgba(0, 20, 30, 0.75), rgba(0, 20, 30, 0.85)), 
+                            url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -50,52 +54,45 @@ else:
                 padding: 15px;
             }}
             .card {{
-                background: #ffffff;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
                 width: 100%;
                 max-width: 440px;
-                padding: 25px 20px;
+                padding: 30px 20px;
                 border-radius: 24px;
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
                 text-align: center;
             }}
-            .taxi-banner {{
-                position: relative;
-                width: 100%;
-                height: 170px;
+            .taxi-title-box {{
+                background: linear-gradient(135deg, #002d3a, #0a9396);
+                color: #ffc107;
+                padding: 18px;
                 border-radius: 16px;
-                overflow: hidden;
-                margin-bottom: 20px;
+                margin-bottom: 25px;
                 box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
             }}
-            .taxi-banner img {{
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
+            .taxi-title-box h1 {{
+                font-size: 32px;
+                font-weight: 900;
+                letter-spacing: 2px;
+                margin-bottom: 4px;
             }}
-            .taxi-badge {{
-                position: absolute;
-                bottom: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 45, 58, 0.85);
-                color: #00f5d4;
-                padding: 6px 16px;
-                border-radius: 20px;
+            .taxi-title-box p {{
+                color: #ffffff;
                 font-size: 13px;
-                font-weight: bold;
-                letter-spacing: 0.5px;
-                backdrop-filter: blur(5px);
-                border: 1px solid rgba(0, 245, 212, 0.3);
+                font-weight: 500;
+                letter-spacing: 1px;
+                margin: 0;
             }}
             h2 {{
                 color: #002d3a;
-                font-size: 22px;
+                font-size: 20px;
                 margin-bottom: 6px;
             }}
-            p {{
+            .subtitle {{
                 color: #666;
                 font-size: 14px;
-                margin-bottom: 22px;
+                margin-bottom: 25px;
             }}
             .button-group {{
                 display: flex;
@@ -140,10 +137,10 @@ else:
             /* Responsive cho điện thoại nhỏ */
             @media (max-width: 480px) {{
                 .card {{
-                    padding: 20px 15px;
+                    padding: 22px 15px;
                 }}
-                h2 {{
-                    font-size: 20px;
+                .taxi-title-box h1 {{
+                    font-size: 28px;
                 }}
                 button {{
                     font-size: 16px;
@@ -155,14 +152,14 @@ else:
     <body>
 
         <div class="card">
-            <!-- Hình ảnh minh họa xe điện chuyên nghiệp -->
-            <div class="taxi-banner">
-                <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80" alt="Taxi Xanh SM">
-                <div class="taxi-badge">🚙 TAXI XANH SM</div>
+            <!-- Khối tiêu đề chữ TAXI -->
+            <div class="taxi-title-box">
+                <h1>🚖 TAXI</h1>
+                <p>HỆ THỐNG PHÁT ÂM THANH TRÊN XE</p>
             </div>
 
-            <h2>Hệ Thống Lời Chào Tự Động</h2>
-            <p>Chạm vào nút tương ứng khi khách lên hoặc xuống xe</p>
+            <h2>Xin chào tài xế</h2>
+            <div class="subtitle">Chạm vào nút tương ứng khi khách lên hoặc xuống xe</div>
 
             <div class="button-group">
                 <!-- Nút Lên Xe -->
@@ -200,4 +197,4 @@ else:
     """
 
   # Hiển thị giao diện lên Streamlit
-  st.components.v1.html(html_code, height=500)
+  st.components.v1.html(html_code, height=520)
