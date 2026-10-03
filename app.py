@@ -2,7 +2,7 @@ import base64
 import streamlit as st
 
 st.set_page_config(
-    page_title="Hệ Thống Lời Chào Xe Taxi", page_icon="🚕", layout="centered"
+    page_title="Hệ Thống Lời Chào Taxi Xanh SM", page_icon="🚙", layout="centered"
 )
 
 
@@ -26,7 +26,7 @@ if not audio_len_base64 or not audio_xuong_base64:
       " tên file trong thư mục GitHub của bạn!"
   )
 else:
-  # Giao diện HTML + CSS Responsive & Hình ảnh xe Taxi
+  # Giao diện HTML + CSS phong cách Xanh SM đặc trưng
   html_code = f"""
     <!DOCTYPE html>
     <html lang="vi">
@@ -41,44 +41,61 @@ else:
             }}
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-                background-color: #f8f9fa;
+                /* Background chuẩn màu xanh ngọc đặc trưng của Xanh SM */
+                background: linear-gradient(135deg, #002d3a, #005f73, #0a9396);
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 min-height: 100vh;
-                padding: 10px;
+                padding: 15px;
             }}
             .card {{
                 background: #ffffff;
                 width: 100%;
-                max-width: 450px;
+                max-width: 440px;
                 padding: 25px 20px;
-                border-radius: 20px;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+                border-radius: 24px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
                 text-align: center;
             }}
-            .car-img-container {{
+            .taxi-banner {{
+                position: relative;
                 width: 100%;
-                height: 180px;
-                border-radius: 12px;
+                height: 170px;
+                border-radius: 16px;
                 overflow: hidden;
                 margin-bottom: 20px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
             }}
-            .car-img-container img {{
+            .taxi-banner img {{
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
             }}
+            .taxi-badge {{
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 45, 58, 0.85);
+                color: #00f5d4;
+                padding: 6px 16px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: bold;
+                letter-spacing: 0.5px;
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(0, 245, 212, 0.3);
+            }}
             h2 {{
-                color: #1a1a1a;
+                color: #002d3a;
                 font-size: 22px;
-                margin-bottom: 8px;
+                margin-bottom: 6px;
             }}
             p {{
                 color: #666;
                 font-size: 14px;
-                margin-bottom: 25px;
+                margin-bottom: 22px;
             }}
             .button-group {{
                 display: flex;
@@ -92,32 +109,35 @@ else:
                 font-weight: bold;
                 color: white;
                 border: none;
-                border-radius: 12px;
+                border-radius: 14px;
                 cursor: pointer;
                 transition: all 0.2s ease;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                gap: 10px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                gap: 12px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             }}
             button:active {{
                 transform: scale(0.97);
             }}
             .btn-welcome {{
-                background: linear-gradient(135deg, #28a745, #20c997);
+                background: linear-gradient(135deg, #009688, #00b4d8);
             }}
             .btn-welcome:hover {{
-                opacity: 0.9;
+                opacity: 0.92;
             }}
             .btn-farewell {{
-                background: linear-gradient(135deg, #007bff, #6610f2);
+                background: linear-gradient(135deg, #d90429, #ef233c);
             }}
             .btn-farewell:hover {{
-                opacity: 0.9;
+                opacity: 0.92;
+            }}
+            .icon {{
+                font-size: 22px;
             }}
             
-            /* Tối ưu hóa cho màn hình điện thoại nhỏ */
+            /* Responsive cho điện thoại nhỏ */
             @media (max-width: 480px) {{
                 .card {{
                     padding: 20px 15px;
@@ -135,23 +155,24 @@ else:
     <body>
 
         <div class="card">
-            <!-- Hình ảnh xe Taxi minh họa chuyên nghiệp -->
-            <div class="car-img-container">
-                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80" alt="Taxi Car">
+            <!-- Hình ảnh minh họa xe điện chuyên nghiệp -->
+            <div class="taxi-banner">
+                <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80" alt="Taxi Xanh SM">
+                <div class="taxi-badge">🚙 TAXI XANH SM</div>
             </div>
 
             <h2>Hệ Thống Lời Chào Tự Động</h2>
-            <p>Chọn thao tác bên dưới khi khách lên hoặc xuống xe</p>
+            <p>Chạm vào nút tương ứng khi khách lên hoặc xuống xe</p>
 
             <div class="button-group">
                 <!-- Nút Lên Xe -->
                 <button class="btn-welcome" onclick="playAudio('welcomeAudio')">
-                    🚗 Lên Xe (Phát Chào Mừng)
+                    <span class="icon">🚗</span> Lên Xe (Phát Chào Mừng)
                 </button>
                 
                 <!-- Nút Xuống Xe -->
                 <button class="btn-farewell" onclick="playAudio('farewellAudio')">
-                    🚏 Xuống Xe (Thông Báo Dừng)
+                    <span class="icon">🏁</span> Xuống Xe (Thông Báo Dừng)
                 </button>
             </div>
         </div>
@@ -178,5 +199,5 @@ else:
     </html>
     """
 
-  # Hiển thị giao diện trên Streamlit với chiều cao thích ứng đẹp mắt
-  st.components.v1.html(html_code, height=480)
+  # Hiển thị giao diện lên Streamlit
+  st.components.v1.html(html_code, height=500)
