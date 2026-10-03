@@ -26,7 +26,7 @@ if not audio_len_base64 or not audio_xuong_base64:
       " tên file trong thư mục GitHub của bạn!"
   )
 else:
-  # Giao diện HTML + CSS có hình nền xe taxi chuyên nghiệp
+  # Giao diện HTML + CSS có thêm nút Tạm Dừng (Stop)
   html_code = f"""
     <!DOCTYPE html>
     <html lang="vi">
@@ -41,7 +41,6 @@ else:
             }}
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-                /* Hình nền xe taxi với lớp phủ màu tối mờ để làm nổi bật bảng điều khiển */
                 background: linear-gradient(rgba(0, 20, 30, 0.75), rgba(0, 20, 30, 0.85)), 
                             url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80');
                 background-size: cover;
@@ -130,6 +129,13 @@ else:
             .btn-farewell:hover {{
                 opacity: 0.92;
             }}
+            .btn-stop {{
+                background: linear-gradient(135deg, #f77f00, #fcbf49);
+                color: #fff;
+            }}
+            .btn-stop:hover {{
+                opacity: 0.92;
+            }}
             .icon {{
                 font-size: 22px;
             }}
@@ -171,6 +177,11 @@ else:
                 <button class="btn-farewell" onclick="playAudio('farewellAudio')">
                     <span class="icon">🏁</span> Xuống Xe (Thông Báo Dừng)
                 </button>
+
+                <!-- Nút Tạm Dừng Âm Thanh -->
+                <button class="btn-stop" onclick="stopAllAudio()">
+                    <span class="icon">⏸️</span> Tạm Dừng Âm Thanh
+                </button>
             </div>
         </div>
 
@@ -180,14 +191,17 @@ else:
 
         <script>
             function playAudio(audioId) {{
-                document.querySelectorAll('audio').forEach(audio => {{
-                    audio.pause();
-                    audio.currentTime = 0;
-                }});
-                
+                stopAllAudio();
                 const audio = document.getElementById(audioId);
                 audio.play().catch(error => {{
                     alert("Trình duyệt chặn phát tự động, vui lòng chạm thêm lần nữa!");
+                }});
+            }}
+
+            function stopAllAudio() {{
+                document.querySelectorAll('audio').forEach(audio => {{
+                    audio.pause();
+                    audio.currentTime = 0;
                 }});
             }}
         </script>
@@ -197,4 +211,4 @@ else:
     """
 
   # Hiển thị giao diện lên Streamlit
-  st.components.v1.html(html_code, height=520)
+  st.components.v1.html(html_code, height=600)
