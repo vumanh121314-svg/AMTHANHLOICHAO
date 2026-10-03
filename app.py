@@ -26,7 +26,7 @@ if not audio_len_base64 or not audio_xuong_base64:
       " tên file trong thư mục GitHub của bạn!"
   )
 else:
-  # Giao diện HTML + CSS có thêm nút Tạm Dừng (Stop)
+  # Giao diện HTML + CSS + Script chống copy & khóa chuột phải
   html_code = f"""
     <!DOCTYPE html>
     <html lang="vi">
@@ -38,6 +38,11 @@ else:
                 box-sizing: border-box;
                 margin: 0;
                 padding: 0;
+                /* Chặn bôi đen (chọn) văn bản trên toàn trang */
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
             }}
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -140,7 +145,6 @@ else:
                 font-size: 22px;
             }}
             
-            /* Responsive cho điện thoại nhỏ */
             @media (max-width: 480px) {{
                 .card {{
                     padding: 22px 15px;
@@ -158,7 +162,6 @@ else:
     <body>
 
         <div class="card">
-            <!-- Khối tiêu đề chữ TAXI -->
             <div class="taxi-title-box">
                 <h1>🚖 TAXI</h1>
                 <p>HỆ THỐNG PHÁT ÂM THANH TRÊN XE</p>
@@ -168,28 +171,43 @@ else:
             <div class="subtitle">Chạm vào nút tương ứng khi khách lên hoặc xuống xe</div>
 
             <div class="button-group">
-                <!-- Nút Lên Xe -->
                 <button class="btn-welcome" onclick="playAudio('welcomeAudio')">
                     <span class="icon">🚗</span> Lên Xe (Phát Chào Mừng)
                 </button>
                 
-                <!-- Nút Xuống Xe -->
                 <button class="btn-farewell" onclick="playAudio('farewellAudio')">
                     <span class="icon">🏁</span> Xuống Xe (Thông Báo Dừng)
                 </button>
 
-                <!-- Nút Tạm Dừng Âm Thanh -->
                 <button class="btn-stop" onclick="stopAllAudio()">
-                    <span class="icon">⏸️</span> Tạm Dừng Âm Thanh
+                    <span class="icon">⏸️️</span> Tạm Dừng Âm Thanh
                 </button>
             </div>
         </div>
 
-        <!-- Thẻ Audio ẩn -->
         <audio id="welcomeAudio" src="data:audio/mp3;base64,{audio_len_base64}"></audio>
         <audio id="farewellAudio" src="data:audio/mp3;base64,{audio_xuong_base64}"></audio>
 
         <script>
+            // 1. Chặn click chuột phải
+            document.addEventListener('contextmenu', function(e) {{
+                e.preventDefault();
+                alert("Tính năng này đã bị khóa bảo vệ!");
+            }});
+
+            // 2. Chặn các phím tắt copy, xem mã nguồn (Ctrl+C, Ctrl+U, F12, Ctrl+Shift+I...)
+            document.addEventListener('keydown', function(e) {{
+                if (
+                    e.keyCode == 123 || // Phím F12
+                    (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || // Ctrl+Shift+I / J (DevTools)
+                    (e.ctrlKey && e.keyCode == 85) || // Ctrl+U (Xem mã nguồn)
+                    (e.ctrlKey && e.keyCode == 67)    // Ctrl+C (Copy)
+                ) {{
+                    e.preventDefault();
+                    return false;
+                }}
+            }});
+
             function playAudio(audioId) {{
                 stopAllAudio();
                 const audio = document.getElementById(audioId);
@@ -210,5 +228,4 @@ else:
     </html>
     """
 
-  # Hiển thị giao diện lên Streamlit
   st.components.v1.html(html_code, height=600)
